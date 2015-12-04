@@ -10,6 +10,28 @@ namespace TradeServer
     namespace Tcp
     {
         /// <summary>
+        /// 保存网络异步通信的相关信息
+        /// </summary>
+        class UserToken
+        {
+            /// <summary>
+            /// 接收的客户端连接socket
+            /// </summary>
+            public Socket socket { get; set; }
+
+            /// <summary>
+            /// 与客户端通信的接收缓冲区
+            /// </summary>
+            public BufferManager.Buffer receiveBuffer { get; set; }
+
+            /// <summary>
+            /// 与客户端通信的发送缓冲区
+            /// </summary>
+            public BufferManager.Buffer sendBuffer { get; set; }
+        }
+
+
+        /// <summary>
         /// Tcp服务器通信模块，接收客户端请求，并返回请求结果。
         /// </summary>
         class TcpServer
