@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace TradeServer
 {
@@ -10,6 +7,9 @@ namespace TradeServer
     {
         static void Main(string[] args)
         {
+            Tcp.TcpServer server = new Tcp.TcpServer(10, 1000, 1000);
+            server.Start(new IPEndPoint(IPAddress.Any, 5555));
+            Console.ReadKey();
         }
     }
 }
