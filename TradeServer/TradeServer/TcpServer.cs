@@ -3,6 +3,7 @@ using System.Text;
 using System.Net.Sockets;
 using System.Threading;
 using System.Net;
+using System.Collections.Generic;
 
 namespace TradeServer
 {
@@ -35,7 +36,7 @@ namespace TradeServer
             SocketAsyncEventArgs m_acceptEventArg;
 
             /// <summary>异步操作事件池，用于客户端异步通信（Receive, Send操作）</summary>
-            AsyncEventArgsPool m_readWriteEventArgPool;
+            Stack<SocketAsyncEventArgs> m_readWriteEventArgPool;
 
             /// <summary>用于线程互斥的信号量，保证最多接收设定数目的客户端连接</summary>
             Semaphore m_maxNumberAcceptedClients;
@@ -60,7 +61,7 @@ namespace TradeServer
                 m_acceptEventArg.Completed += Accept_Completed; // 绑定回调函数
 
                 // 初始化收发数据异步操作事件池
-                m_readWriteEventArgPool = new AsyncEventArgsPool(numConnections);
+                m_readWriteEventArgPool = new Stack<SocketAsyncEventArgs>(numConnections);
                 for (int i = 0; i < m_numConnections; i++)
                 {
                     // 创建异步事件
