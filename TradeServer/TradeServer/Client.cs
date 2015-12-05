@@ -24,10 +24,7 @@ namespace TradeServer
             EventArgsPool m_readWriteEventArgPool;
 
             /// <summary>接收缓冲池</summary>
-            BufferManager.BufferPool m_receiveBufferPool;
-
-            /// <summary>发送缓冲缓冲池</summary>
-            BufferManager.BufferPool m_sendBufferPool;
+            BufferManager.BufferPool m_readWriteBufferPool;
 
             /// <summary>互斥信号量，保证最多接收设定数目的客户端连接</summary>
             Semaphore m_maxNumberAcceptedClients;
@@ -47,16 +44,15 @@ namespace TradeServer
             /// </summary>
             public BufferManager.Buffer m_sendBuffer;
 
-            public Client(Socket socket, EventArgsPool readWriteEventArgPool, BufferManager.BufferPool receiveBufferPool, BufferManager.BufferPool sendBufferPool, Semaphore maxNumberAcceptedClients)
+            public Client(Socket socket, EventArgsPool readWriteEventArgPool, BufferManager.BufferPool readWriteBufferPool, Semaphore maxNumberAcceptedClients)
             {
                 m_socket                   = socket;
                 m_readWriteEventArgPool    = readWriteEventArgPool;
-                m_receiveBufferPool        = receiveBufferPool;
-                m_sendBufferPool           = sendBufferPool;
+                m_readWriteBufferPool        = readWriteBufferPool;
                 m_maxNumberAcceptedClients = maxNumberAcceptedClients;
                 m_readWriteEventArg        = readWriteEventArgPool.GetEventArgs();
-                m_receiveBuffer            = receiveBufferPool.GetBuffer();
-                m_sendBuffer               = sendBufferPool.GetBuffer();
+                m_receiveBuffer            = readWriteBufferPool.GetBuffer();
+                m_sendBuffer               = readWriteBufferPool.GetBuffer();
 
                 // 绑定异步事件回调函数
                 m_readWriteEventArg.Completed += IO_Completed;
@@ -156,8 +152,8 @@ namespace TradeServer
                 catch (Exception) { }
                 m_socket.Close();
 
-                m_receiveBufferPool.FreeBuffer(m_receiveBuffer);
-                m_sendBufferPool.FreeBuffer(m_sendBuffer);
+                m_readWriteBufferPool.FreeBuffer(m_receiveBuffer);
+                m_readWriteBufferPool.FreeBuffer(m_sendBuffer);
 
                 m_readWriteEventArgPool.FreeEventArgs(m_readWriteEventArg);
 
