@@ -21,8 +21,11 @@ namespace TradeServer
             /// <summary>发送缓冲区大小</summary>
             private int m_sendBufferSize;
 
-            /// <summary>接收/发送缓冲池</summary>
-            BufferManager.BufferPool m_readWriteBufferPool;
+            /// <summary>接收缓冲池</summary>
+            BufferManager.BufferPool m_receiveBufferPool;
+
+            /// <summary>发送缓冲缓冲池</summary>
+            BufferManager.BufferPool m_sendBufferPool;
 
             /// <summary>监听Socket</summary>
             Socket m_listenSocket;
@@ -48,8 +51,9 @@ namespace TradeServer
                 m_numConnections           = numConnections;        // 初始化最大连接数
                 m_receiveBufferSize        = receiveBufferSize;     // 初始化接收缓冲区大小
                 m_sendBufferSize           = sendBufferSize;        // 初始化发送缓冲区大小
-                m_readWriteBufferPool      = new BufferManager.BufferPool(m_receiveBufferSize, numConnections * 2);   // 创建接收缓冲池，每个连接用到2个缓冲区（一个接收缓冲区，一个发送缓冲区）
-                m_maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);                           // 创建互斥信号量
+                m_receiveBufferPool        = new BufferManager.BufferPool(m_receiveBufferSize, numConnections); // 创建接收缓冲池
+                m_sendBufferPool           = new BufferManager.BufferPool(m_sendBufferSize, numConnections);    // 创建发送缓冲池
+                m_maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);                     // 创建互斥信号量
 
                 // 初始化接收连接异步操作事件
                 m_acceptEventArg = new SocketAsyncEventArgs(); 
@@ -104,7 +108,7 @@ namespace TradeServer
             private void ProcessAccept(SocketAsyncEventArgs acceptEventArg)
             {
                 // 创建并启动客户端
-                Client client = new Client(acceptEventArg.AcceptSocket, m_readWriteEventArgPool, m_readWriteBufferPool, m_maxNumberAcceptedClients);
+                Client client = new Client(acceptEventArg.AcceptSocket, m_readWriteEventArgPool, m_receiveBufferPool, m_sendBufferPool, m_maxNumberAcceptedClients);
                 client.Start();
 
                 // 清理本次客户端连接的socket，并继续接收下一个客户端连接
