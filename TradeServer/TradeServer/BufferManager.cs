@@ -16,11 +16,11 @@ namespace TradeServer
             int    m_count;
             int    m_size;
 
-            public Buffer(byte[] bytes, int offset, int size)
+            public Buffer(int size)
             {
-                m_bytes  = bytes;
                 m_size   = size;
-                m_offset = offset;
+                m_bytes  = new byte[size];
+                m_offset = 0;
                 m_count  = 0;
             }
 
@@ -66,20 +66,11 @@ namespace TradeServer
         /// <summary>
         /// 提供或回收缓冲区。
         /// </summary>
-        /// <remarks> 
-        /// 1.维护一个缓冲池（预分配的一大块连续内存）。
-        /// 2.缓冲池被分为若干个等宽缓冲区。
-        /// 3.缓冲区状态分为可用和被占用。
-        /// 4.缓冲池向外部提供可用缓冲区，直至所有缓冲区都被占用。
-        /// 5.被占用的缓冲区经外部释放后将重新变为可用。
-        /// </remarks>
         class BufferPool
         {
-            byte[]     m_bytes;         // 缓冲池内存块
-            int        m_bufferNum;     // 缓冲区个数
-            int        m_bufferSize;    // 每个缓冲区的大小
-            int        m_currentIndex;  // 下一个可用的缓冲区索引（相对于内存块首字节的索引）
-            Stack<int> m_freeIndex;     // 经释放重新变为可用的缓冲区索引
+            int           m_bufferNum;     // 缓冲区个数
+            int           m_bufferSize;    // 每个缓冲区的大小
+            Stack<Buffer> m_bufferPool;    // 缓冲池
 
             /// <summary>
             /// 创建缓冲池
@@ -90,30 +81,22 @@ namespace TradeServer
             {
                 m_bufferNum    = bufferNum;
                 m_bufferSize   = bufferSize;
-                m_bytes        = new byte[bufferSize * bufferNum];
-                m_currentIndex = 0;
-                m_freeIndex    = new Stack<int>();
-            }
+                m_bufferPool   = new Stack<Buffer>(bufferNum);
 
-            private int TotalBytes
-            {
-                get { return m_bufferSize * m_bufferNum; }
+                for (int i = 0; i < bufferNum; i++)
+                {
+                    m_bufferPool.Push(new Buffer(bufferSize));
+                }
             }
 
             public Buffer GetBuffer()
             {
-                if (m_freeIndex.Count > 0)
-                    return new Buffer(m_bytes, m_freeIndex.Pop(), m_bufferSize);
-                else if (m_currentIndex + m_bufferSize < TotalBytes)
-                    return new Buffer(m_bytes, m_currentIndex, m_bufferSize);
-                else
-                    return null;
+                return m_bufferPool.Pop();
             }
 
             public void FreeBuffer(Buffer buffer)
             {
-                if (buffer != null)
-                    m_freeIndex.Push(buffer.offset);
+                m_bufferPool.Push(buffer);
             }
         }
     }
