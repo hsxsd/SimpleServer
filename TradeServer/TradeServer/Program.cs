@@ -7,8 +7,8 @@ namespace TradeServer
     {
         static void Main(string[] args)
         {
-            Tcp.TcpServer server = new Tcp.TcpServer(10, 1000, 1000);
-            server.Start(new IPEndPoint(IPAddress.Any, 5555));
+            Tcp.TcpServer server = new Tcp.TcpServer(10, 1000, 1000, new IPEndPoint(IPAddress.Any, 5555));
+            server.Start();
             Console.ReadKey();
         }
     }
