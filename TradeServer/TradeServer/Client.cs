@@ -21,7 +21,7 @@ namespace TradeServer
             public Socket m_socket;
 
             /// <summary>Receive/Send异步事件池</summary>
-            Stack<SocketAsyncEventArgs> m_readWriteEventArgPool;
+            EventArgsPool m_readWriteEventArgPool;
 
             /// <summary>接收缓冲池</summary>
             BufferManager.BufferPool m_receiveBufferPool;
@@ -47,14 +47,14 @@ namespace TradeServer
             /// </summary>
             public BufferManager.Buffer m_sendBuffer;
 
-            public Client(Socket socket, Stack<SocketAsyncEventArgs> readWriteEventArgPool, BufferManager.BufferPool receiveBufferPool, BufferManager.BufferPool sendBufferPool, Semaphore maxNumberAcceptedClients)
+            public Client(Socket socket, EventArgsPool readWriteEventArgPool, BufferManager.BufferPool receiveBufferPool, BufferManager.BufferPool sendBufferPool, Semaphore maxNumberAcceptedClients)
             {
                 m_socket                   = socket;
                 m_readWriteEventArgPool    = readWriteEventArgPool;
                 m_receiveBufferPool        = receiveBufferPool;
                 m_sendBufferPool           = sendBufferPool;
                 m_maxNumberAcceptedClients = maxNumberAcceptedClients;
-                m_readWriteEventArg        = readWriteEventArgPool.Pop();
+                m_readWriteEventArg        = readWriteEventArgPool.GetEventArgs();
                 m_receiveBuffer            = receiveBufferPool.GetBuffer();
                 m_sendBuffer               = sendBufferPool.GetBuffer();
 
@@ -159,7 +159,7 @@ namespace TradeServer
                 m_receiveBufferPool.FreeBuffer(m_receiveBuffer);
                 m_sendBufferPool.FreeBuffer(m_sendBuffer);
 
-                m_readWriteEventArgPool.Push(m_readWriteEventArg);
+                m_readWriteEventArgPool.FreeEventArgs(m_readWriteEventArg);
 
                 m_maxNumberAcceptedClients.Release();
             }

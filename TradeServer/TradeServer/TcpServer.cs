@@ -34,7 +34,7 @@ namespace TradeServer
             SocketAsyncEventArgs m_acceptEventArg;
 
             /// <summary>Receive/Send异步事件池</summary>
-            Stack<SocketAsyncEventArgs> m_readWriteEventArgPool;
+            EventArgsPool m_readWriteEventArgPool;
 
             /// <summary>互斥信号量，保证最多接收设定数目的客户端连接</summary>
             Semaphore m_maxNumberAcceptedClients;
@@ -60,12 +60,7 @@ namespace TradeServer
                 m_acceptEventArg.Completed += Accept_Completed;
 
                 // 初始化收发数据异步操作事件池
-                m_readWriteEventArgPool = new Stack<SocketAsyncEventArgs>(numConnections);
-                for (int i = 0; i < m_numConnections; i++)
-                {
-                    SocketAsyncEventArgs readWriteEventArg = new SocketAsyncEventArgs();
-                    m_readWriteEventArgPool.Push(readWriteEventArg);
-                }
+                m_readWriteEventArgPool = new EventArgsPool(numConnections);
 
                 // 创建监听socket
                 m_listenSocket = new Socket(serverEndPoint.AddressFamily,
@@ -112,11 +107,6 @@ namespace TradeServer
             /// <param name="acceptEventArg"></param>
             private void ProcessAccept(SocketAsyncEventArgs acceptEventArg)
             {
-                // 从事件池中取一个事件，从接收/发送缓冲池中区缓冲区
-                SocketAsyncEventArgs readWriteEventArg = m_readWriteEventArgPool.Pop();
-                BufferManager.Buffer receiveBuffer     = m_receiveBufferPool.GetBuffer();
-                BufferManager.Buffer sendBuffer        = m_sendBufferPool.GetBuffer();
-
                 // 创建并启动客户端
                 Client client = new Client(acceptEventArg.AcceptSocket, m_readWriteEventArgPool, m_receiveBufferPool, m_sendBufferPool, m_maxNumberAcceptedClients);
                 client.Start();
