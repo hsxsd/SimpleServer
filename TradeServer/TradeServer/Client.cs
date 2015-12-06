@@ -1,15 +1,70 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace TradeServer
 {
     namespace Tcp
     {
+        /// <summary>
+        /// 缓冲区
+        /// </summary>
+        class TcpBuffer
+        {
+            byte[] m_bytes;
+            int    m_offset;
+            int    m_count;
+            int    m_size;
+
+            public TcpBuffer(int size)
+            {
+                m_size   = size;
+                m_bytes  = new byte[size];
+                m_offset = 0;
+                m_count  = 0;
+            }
+
+            /// <summary>
+            /// 缓冲区所在的内存块
+            /// </summary>
+            public byte[] bytes
+            {
+                get { return m_bytes; }
+            }
+
+            /// <summary>
+            /// 缓冲区相对于内存块首字节的索引
+            /// </summary>
+            public int offset
+            {
+                get { return m_offset; }
+            }
+
+            /// <summary>
+            /// 缓冲区的大小
+            /// </summary>
+            public int size
+            {
+                get { return m_size; }
+            }
+
+            /// <summary>
+            /// 缓冲区里实际内容的字节数
+            /// </summary>
+            public int count
+            {
+                get { return m_count; }
+                set { m_count = value > m_size ? m_size : value; }
+            }
+
+            public override string ToString()
+            {
+                return Encoding.Default.GetString(m_bytes, m_offset, m_count);
+            }
+        }
+
+
+
         /// <summary>
         /// 维护客户账号密码、客户端连接Socket、异步事件、通信缓冲区等信息，并负责与客户端通信
         /// </summary>
@@ -20,18 +75,6 @@ namespace TradeServer
             /// </summary>
             public Socket m_socket;
 
-            /// <summary>Receive/Send异步事件池</summary>
-            EventArgsPool m_readWriteEventArgPool;
-
-            /// <summary>接收缓冲池</summary>
-            BufferManager.BufferPool m_receiveBufferPool;
-
-            /// <summary>发送缓冲缓冲池</summary>
-            BufferManager.BufferPool m_sendBufferPool;
-
-            /// <summary>互斥信号量，保证最多接收设定数目的客户端连接</summary>
-            Semaphore m_maxNumberAcceptedClients;
-
             /// <summary>
             /// 异步操作事件，用于异步通信（Receive, Send操作）
             /// </summary>
@@ -40,27 +83,29 @@ namespace TradeServer
             /// <summary>
             /// 与客户端通信的接收缓冲区
             /// </summary>
-            public BufferManager.Buffer m_receiveBuffer;
+            public TcpBuffer m_receiveBuffer;
 
             /// <summary>
             /// 与客户端通信的发送缓冲区
             /// </summary>
-            public BufferManager.Buffer m_sendBuffer;
+            public TcpBuffer m_sendBuffer;
 
-            public Client(Socket socket, EventArgsPool readWriteEventArgPool, BufferManager.BufferPool receiveBufferPool, BufferManager.BufferPool sendBufferPool, Semaphore maxNumberAcceptedClients)
+
+            /// <summary>
+            /// 创建客户端，分配接收/发送缓冲区，创建异步接收事件
+            /// </summary>
+            /// <param name="socket">客户端连接socket</param>
+            /// <param name="receiveBufferSize">接收缓冲区大小</param>
+            /// <param name="sendBufferSize">发送缓冲区大小</param>
+            public Client(Socket socket, int receiveBufferSize, int sendBufferSize)
             {
-                m_socket                   = socket;
-                m_readWriteEventArgPool    = readWriteEventArgPool;
-                m_receiveBufferPool        = receiveBufferPool;
-                m_sendBufferPool           = sendBufferPool;
-                m_maxNumberAcceptedClients = maxNumberAcceptedClients;
-                m_readWriteEventArg        = readWriteEventArgPool.GetEventArgs();
-                m_receiveBuffer            = receiveBufferPool.GetBuffer();
-                m_sendBuffer               = sendBufferPool.GetBuffer();
-
-                // 绑定异步事件回调函数
+                m_socket                      = socket;
+                m_receiveBuffer               = new TcpBuffer(receiveBufferSize);
+                m_sendBuffer                  = new TcpBuffer(sendBufferSize);
+                m_readWriteEventArg           = new SocketAsyncEventArgs();
                 m_readWriteEventArg.Completed += IO_Completed;
             }
+
 
             public void Start()
             {
@@ -76,6 +121,7 @@ namespace TradeServer
                     ProcessReceive();
                 }
             }
+
 
             /// <summary>
             /// 异步等待客户端IO完成
@@ -94,6 +140,7 @@ namespace TradeServer
                         throw new ArgumentException("The last operation completed on the socket was not a receive or send");
                 }
             }
+
 
             /// <summary>
             /// 处理接收到的客户端数据
@@ -128,6 +175,7 @@ namespace TradeServer
                 }
             }
 
+
             /// <summary>
             /// 完成向客户端发送数据任务
             /// </summary>
@@ -144,8 +192,9 @@ namespace TradeServer
                 }
             }
 
+
             /// <summary>
-            /// 关闭客户端连接，释放互斥信号，回收接收和发送缓冲区，回收异步读写事件
+            /// 关闭客户端连接
             /// </summary>
             private void Close()
             {
@@ -155,13 +204,6 @@ namespace TradeServer
                 }
                 catch (Exception) { }
                 m_socket.Close();
-
-                m_receiveBufferPool.FreeBuffer(m_receiveBuffer);
-                m_sendBufferPool.FreeBuffer(m_sendBuffer);
-
-                m_readWriteEventArgPool.FreeEventArgs(m_readWriteEventArg);
-
-                m_maxNumberAcceptedClients.Release();
             }
         }
     }
