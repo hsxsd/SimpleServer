@@ -13,16 +13,16 @@ namespace TradeServer
         class TcpServer
         {
             /// <summary>接收缓冲区大小</summary>
-            private int          m_receiveBufferSize;
+            private int                  m_receiveBufferSize;
 
             /// <summary>发送缓冲区大小</summary>
-            private int          m_sendBufferSize;
+            private int                  m_sendBufferSize;
 
             /// <summary>监听Socket</summary>
-            Socket               m_listenSocket;
+            private Socket               m_listenSocket;
 
             /// <summary>Accept异步事件</summary>
-            SocketAsyncEventArgs m_acceptEventArg;
+            private SocketAsyncEventArgs m_acceptEventArg;
 
 
             /// <summary>

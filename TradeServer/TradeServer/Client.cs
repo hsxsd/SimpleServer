@@ -11,10 +11,10 @@ namespace TradeServer
         /// </summary>
         class TcpBuffer
         {
-            byte[] m_bytes;
-            int    m_offset;
-            int    m_count;
-            int    m_size;
+            private byte[] m_bytes;
+            private int    m_offset;
+            private int    m_count;
+            private int    m_size;
 
             public TcpBuffer(int size)
             {
@@ -73,22 +73,22 @@ namespace TradeServer
             /// <summary>
             /// 接收的客户端连接socket
             /// </summary>
-            public Socket m_socket;
+            private Socket               m_socket;
 
             /// <summary>
             /// 异步操作事件，用于异步通信（Receive, Send操作）
             /// </summary>
-            public SocketAsyncEventArgs m_readWriteEventArg;
+            private SocketAsyncEventArgs m_readWriteEventArg;
 
             /// <summary>
             /// 与客户端通信的接收缓冲区
             /// </summary>
-            public TcpBuffer m_receiveBuffer;
+            private TcpBuffer            m_receiveBuffer;
 
             /// <summary>
             /// 与客户端通信的发送缓冲区
             /// </summary>
-            public TcpBuffer m_sendBuffer;
+            private TcpBuffer            m_sendBuffer;
 
 
             /// <summary>
