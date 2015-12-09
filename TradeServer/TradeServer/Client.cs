@@ -24,6 +24,14 @@ namespace TradeServer
                 m_count  = 0;
             }
 
+            public TcpBuffer(byte[] bytes)
+            {
+                m_size = bytes.Length;
+                m_bytes = bytes;
+                m_offset = 0;
+                m_count = m_size;
+            }
+
             /// <summary>
             /// 缓冲区所在的内存块
             /// </summary>
@@ -152,12 +160,29 @@ namespace TradeServer
                 {
                     // 处理接收到的数据
                     m_receiveBuffer.count = m_readWriteEventArg.BytesTransferred;
-                    Console.WriteLine("接收到客户端数据：" + m_receiveBuffer.ToString());
+                    TcpBuffer receivePack = TcpProtocol.Unpack(m_receiveBuffer);
+                    if (receivePack == null)
+                    {
+                        Console.WriteLine("接收客户端数据错误");
+                        Close();
+                        return;
+                    }
+
+                    Console.WriteLine("接收到客户端数据：" + receivePack.ToString());
 
                     // 填充发送缓冲区
                     string sendStr = "客户端你好";
-                    System.Buffer.BlockCopy(Encoding.Default.GetBytes(sendStr), 0, m_sendBuffer.bytes, m_sendBuffer.offset, Encoding.Default.GetByteCount(sendStr));
-                    m_sendBuffer.count = Encoding.Default.GetByteCount(sendStr);
+                    TcpBuffer sendPack  = new TcpBuffer(Encoding.Default.GetBytes(sendStr));
+                    TcpBuffer sendBuffer = TcpProtocol.Pack(sendPack, 0);
+                    if (sendBuffer == null)
+                    {
+                        Console.WriteLine("数据处理错误");
+                        Close();
+                        return;
+                    }
+
+                    System.Buffer.BlockCopy(sendBuffer.bytes, sendBuffer.offset, m_sendBuffer.bytes, m_sendBuffer.offset, sendBuffer.count);
+                    m_sendBuffer.count = sendBuffer.count;
 
                     // 设置发送缓冲区
                     m_readWriteEventArg.SetBuffer(m_sendBuffer.bytes, m_sendBuffer.offset, m_sendBuffer.count);
