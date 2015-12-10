@@ -223,6 +223,7 @@ namespace TradeServer
             /// </summary>
             private void Close()
             {
+                Console.WriteLine("客户端退出" + m_socket);
                 try
                 {
                     m_socket.Shutdown(SocketShutdown.Send);

@@ -28,8 +28,13 @@ namespace ClientDemo
 
             string sendstr = "你好服务端";
             TcpBuffer sendPack = TcpProtocol.Pack(new TcpBuffer(Encoding.Default.GetBytes(sendstr)), 0);
-
             client.Send(sendPack.bytes);
+
+            byte[] receiveBuffer = new byte[1000];
+            client.Receive(receiveBuffer);
+            TcpBuffer unpack = TcpProtocol.Unpack(new TcpBuffer(receiveBuffer));
+
+            Console.WriteLine("服务端消息：" + unpack.ToString());
         }
     }
 }
