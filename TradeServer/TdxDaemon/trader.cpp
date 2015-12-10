@@ -24,7 +24,7 @@ int trader_init()
 
 	hDLL = LoadLibrary("tdxtrade.dll");
 
-	if (hDLL == NULL) {
+	if ( hDLL == NULL){
 		printf("tdxtrade.dll加载失败！");
 		return 0;
 	}
@@ -33,20 +33,20 @@ int trader_init()
 	//获取加载库函数地址
 	printf("准备获取dll函数入口...\n");
 
-	tdxlogout = (TDXLOGOUT)GetProcAddress(hDLL, "TdxLogout");
-	tdxinit = (TDXINIT)GetProcAddress(hDLL, "TdxInit");
-	tdxlogin = (TDXLOGIN)GetProcAddress(hDLL, "TdxLogin");
-	tdxgetquote = (TDXGETQUOTE)GetProcAddress(hDLL, "TdxGetQuote");
-	tdxsendorder = (TDXSENDORDER)GetProcAddress(hDLL, "TdxSendOrder");
-	tdxqueryhistory = (TDXQUERYHISTORY)GetProcAddress(hDLL, "TdxQueryHistory");
-	tdxquerydata = (TDXQUERYDATA)GetProcAddress(hDLL, "TdxQueryData");
-	tdxexit = (TDXEXIT)GetProcAddress(hDLL, "TdxExit");
-	tdxcancelorder = (TDXCANCELORDER)GetProcAddress(hDLL, "TdxCancelOrder");
+	tdxlogout = (TDXLOGOUT)GetProcAddress(hDLL,"TdxLogout");
+	tdxinit = (TDXINIT)GetProcAddress(hDLL,"TdxInit");
+	tdxlogin = (TDXLOGIN)GetProcAddress(hDLL,"TdxLogin");
+	tdxgetquote = (TDXGETQUOTE)GetProcAddress(hDLL,"TdxGetQuote");
+	tdxsendorder = (TDXSENDORDER)GetProcAddress(hDLL,"TdxSendOrder");
+	tdxqueryhistory = (TDXQUERYHISTORY)GetProcAddress(hDLL,"TdxQueryHistory");
+	tdxquerydata = (TDXQUERYDATA)GetProcAddress(hDLL,"TdxQueryData");
+	tdxexit =(TDXEXIT)GetProcAddress(hDLL,"TdxExit");
+	tdxcancelorder = (TDXCANCELORDER)GetProcAddress(hDLL,"TdxCancelOrder");
 
-	bool FunAddress = tdxinit == NULL || tdxlogin == NULL || tdxqueryhistory == NULL ||
-		tdxlogout == NULL || tdxgetquote == NULL || tdxquerydata == NULL || tdxexit == NULL;
+	bool FunAddress = tdxinit==NULL || tdxlogin==NULL || tdxqueryhistory==NULL ||
+		tdxlogout==NULL || tdxgetquote==NULL || tdxquerydata==NULL || tdxexit==NULL;
 
-	if (FunAddress) {
+	if(FunAddress){
 		printf("获取函数地址失败！\n");
 		printf("释放tdxtrade.dll！\n");
 		FreeLibrary(hDLL);
@@ -70,7 +70,7 @@ int trader_init()
 
 
 	// 登录实盘接口
-	printf("准备登录实盘接口...\n");
+	printf("准备登录实盘接口...\n");	
 
 	char Server[100];
 	char Account[100];
@@ -81,14 +81,14 @@ int trader_init()
 	char gddm2[100];
 	char gdmc[100];
 
-	get_config(gddm1, gddm2, gdmc, Server, Account, JyPass, TxPass, &port);
+	get_config(gddm1,gddm2,gdmc,Server,Account,JyPass,TxPass,&port);
 	char *ErrInfo = (char*)malloc(sizeof(char) * 1024 * 1024);
 	printf("实盘IP: %s\n端口：%d\n账号：%s\n", Server, port, Account);
-
+	
 	printf("请输入交易密码：");
 	scanf("%s", JyPass);
 
-	res = tdxlogin(Server, port, Account, JyPass, TxPass, ErrInfo);
+	res = tdxlogin(Server,port,Account,JyPass,TxPass,ErrInfo);
 	if (res != 1)
 	{
 		printf("登录实盘接口失败：%d %s\n", res, ErrInfo);

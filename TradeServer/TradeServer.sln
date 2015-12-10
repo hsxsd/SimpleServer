@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeServer", "TradeServer\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientDemo", "ClientDemo\ClientDemo.csproj", "{0CED771F-2128-49C5-A499-DE17ADD8120A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TdxDaemonDemo", "TdxDaemonDemo\TdxDaemonDemo.vcxproj", "{22B7206B-DD1C-43EA-A970-1730B8208373}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "20151208-券商实盘登录密码手动输入", "TdxDaemon\TdxDaemon.vcxproj", "{0029DD46-7245-4B13-ABB0-5A4539C60548}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,16 +43,14 @@ Global
 		{0CED771F-2128-49C5-A499-DE17ADD8120A}.Release|x64.Build.0 = Release|Any CPU
 		{0CED771F-2128-49C5-A499-DE17ADD8120A}.Release|x86.ActiveCfg = Release|Any CPU
 		{0CED771F-2128-49C5-A499-DE17ADD8120A}.Release|x86.Build.0 = Release|Any CPU
-		{22B7206B-DD1C-43EA-A970-1730B8208373}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{22B7206B-DD1C-43EA-A970-1730B8208373}.Debug|x64.ActiveCfg = Debug|x64
-		{22B7206B-DD1C-43EA-A970-1730B8208373}.Debug|x64.Build.0 = Debug|x64
-		{22B7206B-DD1C-43EA-A970-1730B8208373}.Debug|x86.ActiveCfg = Debug|Win32
-		{22B7206B-DD1C-43EA-A970-1730B8208373}.Debug|x86.Build.0 = Debug|Win32
-		{22B7206B-DD1C-43EA-A970-1730B8208373}.Release|Any CPU.ActiveCfg = Release|Win32
-		{22B7206B-DD1C-43EA-A970-1730B8208373}.Release|x64.ActiveCfg = Release|x64
-		{22B7206B-DD1C-43EA-A970-1730B8208373}.Release|x64.Build.0 = Release|x64
-		{22B7206B-DD1C-43EA-A970-1730B8208373}.Release|x86.ActiveCfg = Release|Win32
-		{22B7206B-DD1C-43EA-A970-1730B8208373}.Release|x86.Build.0 = Release|Win32
+		{0029DD46-7245-4B13-ABB0-5A4539C60548}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{0029DD46-7245-4B13-ABB0-5A4539C60548}.Debug|x64.ActiveCfg = Debug|Win32
+		{0029DD46-7245-4B13-ABB0-5A4539C60548}.Debug|x86.ActiveCfg = Debug|Win32
+		{0029DD46-7245-4B13-ABB0-5A4539C60548}.Debug|x86.Build.0 = Debug|Win32
+		{0029DD46-7245-4B13-ABB0-5A4539C60548}.Release|Any CPU.ActiveCfg = Release|Win32
+		{0029DD46-7245-4B13-ABB0-5A4539C60548}.Release|x64.ActiveCfg = Release|Win32
+		{0029DD46-7245-4B13-ABB0-5A4539C60548}.Release|x86.ActiveCfg = Release|Win32
+		{0029DD46-7245-4B13-ABB0-5A4539C60548}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
