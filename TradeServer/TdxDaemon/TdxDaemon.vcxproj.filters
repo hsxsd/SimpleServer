@@ -11,14 +11,8 @@
     <ClCompile Include="communication.cpp">
       <Filter>通信模块</Filter>
     </ClCompile>
-    <ClCompile Include="UserManage.cpp">
-      <Filter>用户模块</Filter>
-    </ClCompile>
     <ClCompile Include="config.cpp">
       <Filter>配置模块</Filter>
-    </ClCompile>
-    <ClCompile Include="md5.cpp">
-      <Filter>用户模块</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -34,9 +28,6 @@
     <Filter Include="通信模块">
       <UniqueIdentifier>{f85585e2-9a45-43d1-be12-7cd964a40163}</UniqueIdentifier>
     </Filter>
-    <Filter Include="用户模块">
-      <UniqueIdentifier>{ab019f72-d750-4be5-9e48-d3df7dd375bd}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="trader.h">
@@ -48,14 +39,13 @@
     <ClInclude Include="communication.h">
       <Filter>通信模块</Filter>
     </ClInclude>
-    <ClInclude Include="UserManage.h">
-      <Filter>用户模块</Filter>
-    </ClInclude>
     <ClInclude Include="config.h">
       <Filter>配置模块</Filter>
     </ClInclude>
-    <ClInclude Include="md5.h">
-      <Filter>用户模块</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.ini">
+      <Filter>配置模块</Filter>
+    </None>
   </ItemGroup>
 </Project>

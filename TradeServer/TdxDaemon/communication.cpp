@@ -107,9 +107,7 @@ BYTE *tcper_PackCmd(int Command,Bytef *buffer,int bufferlen,int &enLen)
 }
 
 int tcper_start()
-{
-	if(!user_InitUser_List("accounts.txt",&User))
-		return 0;
+{	
 	// 初始化服务端Socket
 	WORD wVersionRequested;
 	WSADATA wsaData;
@@ -181,7 +179,6 @@ int tcper_start()
 		DWORD dwThreadId = 0; 
 		ThreadData sockthread;
 		sockthread.sockConn=sockConn;
-		sockthread.current_user=NULL;
 		HANDLE hThread = CreateThread(	NULL, 1024*1024*20, tcper_InstanceThread, (LPVOID)&sockthread, 0, &dwThreadId);
 
 		if (hThread == NULL) {
@@ -326,7 +323,7 @@ DWORD WINAPI tcper_InstanceThread(LPVOID lpvParam) // 处理线程函数，函数参数为客
 
 		// 打包返回结果
 
-		handle_msg(command, (char*)debuffer, delen, (char*)sendbuffer, sendlen, sendcommand, dwThreadId,&(sockthread->current_user));
+		handle_msg(command, (char*)debuffer, delen, (char*)sendbuffer, sendlen, sendcommand, dwThreadId);
 
 		BYTE *pack = NULL;
 		int packlen = 0;

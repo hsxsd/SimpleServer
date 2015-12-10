@@ -83,17 +83,16 @@
     <ClCompile Include="config.cpp" />
     <ClCompile Include="handle.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="md5.cpp" />
     <ClCompile Include="trader.cpp" />
-    <ClCompile Include="UserManage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="communication.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="handle.h" />
-    <ClInclude Include="md5.h" />
     <ClInclude Include="trader.h" />
-    <ClInclude Include="UserManage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

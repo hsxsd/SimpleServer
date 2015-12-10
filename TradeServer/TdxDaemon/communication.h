@@ -22,7 +22,6 @@ struct RecvDataHeader
 struct ThreadData
 {
 	SOCKET sockConn;
-	UserList current_user;
 };
 
 //外部调用函数

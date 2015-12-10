@@ -249,6 +249,6 @@ struct VC_JIAOGEDAN
 extern char *command_string[100];
 //外部调用函数
 void handle_init_command_string();
-int handle_msg(int command, char *debuffer, int delen, char *sendbuffer, int &sendlen, int &sendcommand, int dwThreadId,UserList *current_user);
+int handle_msg(int command, char *debuffer, int delen, char *sendbuffer, int &sendlen, int &sendcommand, int dwThreadId);
 
 #endif
