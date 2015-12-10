@@ -1,0 +1,29 @@
+// TradeServer_C.idl : TradeServer_C.exe 的类型库源
+
+// 此文件将由 MIDL 编译器处理以产生
+// 类型库(TradeServer_C.tlb)。
+
+[ uuid(FABB8986-945A-4A94-B45E-A13EFD5F2B3D), version(1.0) ]
+library TradeServer_C
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	//  CTradeServer_CDoc 的主调度接口
+	
+	[ uuid(D0619233-2E26-4068-8BA4-1A83DE9D379A) ]
+	dispinterface ITradeServer_C
+	{
+		properties:
+			
+		methods:
+	};
+
+	//  CTradeServer_CDoc 的类信息
+	
+	[ uuid(D5C41A4F-3097-4E63-B095-4BEF012C937B) ]
+	coclass TradeServer_C
+	{
+		[default] dispinterface ITradeServer_C;
+	};
+};
