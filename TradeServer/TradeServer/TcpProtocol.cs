@@ -10,9 +10,9 @@ namespace TradeServer
 {
     namespace Tcp
     {
-        class TcpProtocol
+        public class TcpProtocol
         {
-            public static byte[] DecompressByte(byte[] inBytes) //解压
+            private static byte[] DecompressByte(byte[] inBytes) //解压
             {
                 byte[] buffer = new byte[0x800];
                 MemoryStream baseInputStream = new MemoryStream(inBytes);
@@ -40,7 +40,7 @@ namespace TradeServer
                 }
             }
 
-            public static byte[] CompressByte(byte[] inBytes)
+            private static byte[] CompressByte(byte[] inBytes)
             {
                 MemoryStream baseOutputStream = new MemoryStream();
                 Stream stream2 = new GZipOutputStream(baseOutputStream);

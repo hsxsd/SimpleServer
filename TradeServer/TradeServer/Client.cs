@@ -9,7 +9,7 @@ namespace TradeServer
         /// <summary>
         /// 缓冲区
         /// </summary>
-        class TcpBuffer
+        public class TcpBuffer
         {
             byte[] m_bytes;
             int    m_offset;
