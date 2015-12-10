@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="交易模块">
+      <UniqueIdentifier>{02d3afee-ac52-41ea-bcc0-517c88ded10f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="配置模块">
+      <UniqueIdentifier>{12d31295-b1d8-4143-88e3-4fd3ba3e1e08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="通信模块">
+      <UniqueIdentifier>{4d015bed-99a8-405a-a962-f10d548c20f0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="trader.cpp">
+      <Filter>交易模块</Filter>
+    </ClCompile>
+    <ClCompile Include="config.cpp">
+      <Filter>配置模块</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="trader.h">
+      <Filter>交易模块</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>配置模块</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.ini">
+      <Filter>资源文件</Filter>
+    </None>
+  </ItemGroup>
+</Project>
