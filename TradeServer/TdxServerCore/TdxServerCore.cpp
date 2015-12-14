@@ -6,7 +6,6 @@
 
 int main()
 {
-	printf("hello");
 	TdxTrader trader;
 	trader.Init();
     return 0;
