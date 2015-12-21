@@ -11,11 +11,30 @@ namespace TradeServer
         /// </summary>
         public class TcpBuffer
         {
+            /// <summary>
+            /// 缓冲区所在的字节数组
+            /// </summary>
             private byte[] m_bytes;
+
+            /// <summary>
+            /// 缓冲区的起始位置
+            /// </summary>
             private int    m_offset;
-            private int    m_count;
+
+            /// <summary>
+            /// 缓冲区的最大可用字节数
+            /// </summary>
             private int    m_size;
 
+            /// <summary>
+            /// 缓冲区已使用的字节数
+            /// </summary>
+            private int    m_count;
+
+            /// <summary>
+            /// 创建全新的字节数组作为缓冲区，字节数组全部可用
+            /// </summary>
+            /// <param name="size">字节数组的大小</param>
             public TcpBuffer(int size)
             {
                 m_size   = size;
@@ -24,11 +43,15 @@ namespace TradeServer
                 m_count  = 0;
             }
 
+            /// <summary>
+            /// 使用已有的字节数组作为缓冲区，字节数组全部可用，且已填充满内容
+            /// </summary>
+            /// <param name="bytes">已有的字节数组</param>
             public TcpBuffer(byte[] bytes)
             {
-                m_size = bytes.Length;
                 m_bytes = bytes;
                 m_offset = 0;
+                m_size = bytes.Length;
                 m_count = m_size;
             }
 
